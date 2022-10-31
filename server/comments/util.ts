@@ -1,14 +1,17 @@
 import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
-import type {Freet, PopulatedFreet} from '../freet/model';
+import type {Comment, PopulatedComment} from '../comments/model';
+import {Types} from "mongoose";
 
 // Update this if you add a property to the Freet type!
-type FreetResponse = {
+type CommentResponse = {
   _id: string;
   author: string;
   dateCreated: string;
   content: string;
   dateModified: string;
+  parentId: Types.ObjectId;
+
 };
 
 /**
@@ -23,30 +26,26 @@ const formatDate = (date: Date): string => moment(date).format('MMMM Do YYYY, h:
  * Transform a raw Freet object from the database into an object
  * with all the information needed by the frontend
  *
- * @param {HydratedDocument<Freet>} freet - A freet
+ * @param {HydratedDocument<Comment>} freet - A freet
  * @returns {FreetResponse} - The freet object formatted for the frontend
  */
-const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse => {
-  const freetCopy: PopulatedFreet = {
-    ...freet.toObject({
+const constructCommentResponse = (comment: HydratedDocument<Comment>): CommentResponse => {
+  const commentCopy: PopulatedComment = {
+    ...comment.toObject({
       versionKey: false // Cosmetics; prevents returning of __v property
     })
   };
-
-  const {username} = freetCopy.authorId;
-  delete freetCopy.authorId;
-  if (freetCopy.expiryDate === null){
-    delete freetCopy.expiryDate;
-  }
+  const {username} = commentCopy.authorId;
+  delete commentCopy.authorId;
   return {
-    ...freetCopy,
-    _id: freetCopy._id.toString(),
+    ...commentCopy,
+    _id: commentCopy._id.toString(),
     author: username,
-    dateCreated: formatDate(freet.dateCreated),
-    dateModified: formatDate(freet.dateModified)
+    dateCreated: formatDate(comment.dateCreated),
+    dateModified: formatDate(comment.dateModified)
   };
 };
 
 export {
-  constructFreetResponse
+  constructCommentResponse
 };

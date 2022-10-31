@@ -1,4 +1,4 @@
-import type {HydratedDocument, Types} from 'mongoose';
+import type {HydratedDocument, Types} from "mongoose";
 import type {Freet} from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
@@ -17,15 +17,17 @@ class FreetCollection {
    *
    * @param {string} authorId - The id of the author of the freet
    * @param {string} content - The id of the content of the freet
+   * @param expiry
    * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
    */
-  static async addOne(authorId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
+  static async addOne(authorId: Types.ObjectId | string, content: string, expiry: string = null): Promise<HydratedDocument<Freet>> {
     const date = new Date();
     const freet = new FreetModel({
       authorId,
       dateCreated: date,
       content,
-      dateModified: date
+      dateModified: date,
+      expiryDate : expiry
     });
     await freet.save(); // Saves freet to MongoDB
     return freet.populate('authorId');
