@@ -34,6 +34,18 @@
         <button @click="deleteFreet">
           🗑️ Delete
         </button>
+        <button
+            v-if="!liked"
+            @click="likeFreet">
+          ❤ Like
+        </button>
+        <button
+            v-else
+            @click="likeFreet">
+          ❤️ Unlike
+        </button>
+
+
       </div>
     </header>
     <textarea
@@ -78,9 +90,12 @@ export default {
     return {
       editing: false, // Whether or not this freet is in edit mode
       draft: this.freet.content, // Potentially-new content for this freet
-      alerts: {} // Displays success/error messages encountered during freet modification
+      alerts: {}, // Displays success/error messages encountered during freet modification
+      liked: false,
+      users_liking: [],
     };
   },
+
   methods: {
     startEditing() {
       /**
@@ -132,6 +147,38 @@ export default {
       };
       this.request(params);
     },
+
+    likeFreet() {
+      /**
+       * Likes or unlikes Freet
+       */
+      const method = this.liked? "DELETE" : "POST";
+      const params = {
+        method: method,
+        message: `Successfully ${method} like on freet!`,
+        callback: () => {
+          this.liked = !this.liked;
+        }
+      };
+      this.like_request(params);
+    },
+
+    fetchInitialLikes(){
+      /**
+       * Likes or unlikes Freet
+       */
+      console.log("fetching initial likes");
+      const params = {
+        method: "GET",
+        message: `Successfully got likes on freet!`,
+        callback: () => {
+          this.liked = this.users_liking.includes(this.$store.state.username);
+        }
+      };
+      this.like_request(params);
+
+    },
+
     async request(params) {
       /**
        * Submits a request to the freet's endpoint
@@ -161,8 +208,53 @@ export default {
         this.$set(this.alerts, e, 'error');
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }
+    },
+    async like_request(params) {
+      /**
+       * Submits a request to the freet's endpoint
+       * @param params - Options for the request
+       * @param params.body - Body for the request, if it exists
+       * @param params.callback - Function to run if the the request succeeds
+       */
+      console.log("like requesting");
+      const options = {
+        method: params.method, headers: {'Content-Type': 'application/json'}
+      };
+      if (params.body) {
+        options.body = params.body;
+      }
+
+      try {
+        const r = await fetch(`/api/likes/${this.freet._id}`, options);
+        if (!r.ok) {
+          const res = await r.json();
+          console.log("this is repsonse: ", res);
+          throw new Error(res.error);
+        }
+        if (params.method === "GET"){
+          const res = await r.json();
+          console.log("this is res", res);
+          let users_liking = [];
+          for (let liker of res){
+            users_liking.push(liker["author"]);
+          }
+          this.users_liking = users_liking;
+
+        }
+        console.log("done fetching");
+        // this.$store.commit('refreshFreets');
+
+        params.callback();
+      } catch (e) {
+        this.$set(this.alerts, e, 'error');
+        setTimeout(() => this.$delete(this.alerts, e), 3000);
+      }
     }
-  }
+  },
+  created() {
+    console.log("creating");
+    this.fetchInitialLikes();
+  },
 };
 </script>
 
