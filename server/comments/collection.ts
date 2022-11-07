@@ -22,15 +22,16 @@ class CommentCollection {
    */
   static async addOne(authorId: Types.ObjectId | string, parentId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Comment>> {
     const date = new Date();
-    const freet = new CommentModel({
+    const comment = new CommentModel({
       authorId,
       dateCreated: date,
       content,
       dateModified: date,
       parentId,
     });
-    await freet.save(); // Saves freet to MongoDB
-    return freet.populate('authorId');
+    await comment.save(); // Saves freet to MongoDB
+    await comment.populate("parentId");
+    return comment.populate('authorId');
   }
 
   /**
@@ -50,7 +51,7 @@ class CommentCollection {
    */
   static async findAll(): Promise<Array<HydratedDocument<Comment>>> {
     // Retrieves freets and sorts them from most to least recent
-    return CommentModel.find({}).sort({dateModified: -1}).populate('authorId');
+    return CommentModel.find({}).sort({dateModified: -1}).populate('authorId').populate("parentId");
   }
 
   /**
@@ -60,7 +61,7 @@ class CommentCollection {
    */
   static async findCommentsByFreet(parentId: Types.ObjectId | string): Promise<Array<HydratedDocument<Comment>>> {
     // Retrieves freets and sorts them from most to least recent
-    return CommentModel.find({parentId: parentId }).sort({dateModified: -1}).populate('parentId');
+    return CommentModel.find({parentId: parentId }).sort({dateModified: -1}).populate('authorId').populate("parentId");
   }
 
   /**

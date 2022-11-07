@@ -51,6 +51,7 @@ router.get(
  * @throws {400} - If the comment content is empty or a stream of empty spaces
  * @throws {413} - If the comment content is more than 140 characters long
  */
+
 router.post(
   '/:freetId?',
   [
@@ -59,10 +60,17 @@ router.post(
     commentValidator.isValidCommentContent,
   ],
   async (req: Request, res: Response) => {
-    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const parentId = req.params.freetId;
+    let userId;
+    if (req.body.anonymous as boolean === true){
+        userId = "634e079774932ffeb998aeed"; //Anonymous author
+    } else{
+        userId = (req.session.userId as string) ?? '';
+    }
     const comment = await CommentCollection.addOne(userId, parentId, req.body.content);
-    comment.populate('parentId');
+
+    await comment.populate('parentId');
+    await comment.populate('authorId');
     res.status(201).json({
       message: 'Your comment was created successfully.',
       comment: util.constructCommentResponse(comment)

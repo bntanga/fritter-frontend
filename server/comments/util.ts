@@ -1,7 +1,9 @@
 import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
-import type {Comment, PopulatedComment} from '../comments/model';
+import type {Comment, PopulatedComment} from './model';
 import {Types} from "mongoose";
+import {Freet} from "../freet/model";
+import {User} from "../user/model";
 
 // Update this if you add a property to the Freet type!
 type CommentResponse = {
@@ -10,7 +12,7 @@ type CommentResponse = {
   dateCreated: string;
   content: string;
   dateModified: string;
-  parentId: Types.ObjectId;
+  parentId: Freet;
 
 };
 

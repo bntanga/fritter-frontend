@@ -5,25 +5,25 @@
   <form @submit.prevent="submit">
     <h3>{{ title }}</h3>
     <article
-      v-if="fields.length"
+        v-if="fields.length"
     >
       <div
-        v-for="field in fields"
-        :key="field.id"
+          v-for="field in fields"
+          :key="field.id"
       >
         <label :for="field.id">{{ field.label }}:</label>
         <textarea
-          v-if="field.id === 'content'"
-          :name="field.id"
-          :value="field.value"
-          @input="field.value = $event.target.value"
+            v-if="field.id === 'content'"
+            :name="field.id"
+            :value="field.value"
+            @input="field.value = $event.target.value"
         />
         <input
-          v-else
-          :type="field.id === 'password' ? 'password' : 'text'"
-          :name="field.id"
-          :value="field.value"
-          @input="field.value = $event.target.value"
+            v-else
+            :type="field.id === 'password' ? 'password' : 'text'"
+            :name="field.id"
+            :value="field.value"
+            @input="field.value = $event.target.value"
         >
       </div>
     </article>
@@ -31,15 +31,15 @@
       <p>{{ content }}</p>
     </article>
     <button
-      type="submit"
+        type="submit"
     >
       {{ title }}
     </button>
     <section class="alerts">
       <article
-        v-for="(status, alert, index) in alerts"
-        :key="index"
-        :class="status"
+          v-for="(status, alert, index) in alerts"
+          :key="index"
+          :class="status"
       >
         <p>{{ alert }}</p>
       </article>
@@ -68,8 +68,8 @@ export default {
   methods: {
     async submit() {
       /**
-        * Submits a form with the specified options from data().
-        */
+       * Submits a form with the specified options from data().
+       */
       const options = {
         method: this.method,
         headers: {'Content-Type': 'application/json'},
@@ -77,11 +77,11 @@ export default {
       };
       if (this.hasBody) {
         options.body = JSON.stringify(Object.fromEntries(
-          this.fields.map(field => {
-            const {id, value} = field;
-            field.value = '';
-            return [id, value];
-          })
+            this.fields.map(field => {
+              const {id, value} = field;
+              field.value = '';
+              return [id, value];
+            })
         ));
       }
 
@@ -145,7 +145,7 @@ form h3 {
 }
 
 textarea {
-   font-family: inherit;
-   font-size: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 </style>

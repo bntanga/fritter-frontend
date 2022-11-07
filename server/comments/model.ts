@@ -1,6 +1,7 @@
 import type {Types, PopulatedDoc, Document} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import type {User} from '../user/model';
+import {Freet} from "../freet/model";
 
 /**
  * This file defines the properties stored in a Freet
@@ -23,7 +24,7 @@ export type PopulatedComment = {
   dateCreated: Date;
   content: string;
   dateModified: Date;
-  parentId: Types.ObjectId;// ID of parent Freet
+  parentId: Freet;// ID of parent Freet
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table

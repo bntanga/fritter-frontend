@@ -12,9 +12,25 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
-    alerts: {} // global success/error messages encountered during submissions to non-visible forms
+    alerts: {}, // global success/error messages encountered during submissions to non-visible forms
+    create_freet_modal: false,
+    refresh: false,
+    show_comment_modal: true,
   },
   mutations: {
+
+    show_modal(state, new_state){
+      console.log("committing");
+      console.log(new_state);
+      state.create_freet_modal = new_state
+    },
+    show_comment_modal(state, new_state){
+      state.show_comment_modal = new_state
+    },
+    refresh(state){
+      console.log("refreshing");
+      state.refresh = !state.refresh
+    },
     alert(state, payload) {
       /**
        * Add a new message to the global alerts.

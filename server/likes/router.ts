@@ -27,16 +27,16 @@ const router = express.Router();
  *
  */
 router.get(
-  '/:freetId',
-  [
-    userValidator.isUserLoggedIn,
-    freetValidator.isFreetExists,
-  ],
-  async (req: Request, res: Response) => {
-      const allLikes = await LikeCollection.findAllByFreetId(req.params.freetId);
-      const response = allLikes.map(util.constructLikeResponse);
-      res.status(200).json(response);
-  }
+    '/:freetId',
+    [
+        userValidator.isUserLoggedIn,
+        freetValidator.isFreetExists,
+    ],
+    async (req: Request, res: Response) => {
+        const allLikes = await LikeCollection.findAllByFreetId(req.params.freetId);
+        const response = allLikes.map(util.constructLikeResponse);
+        res.status(200).json(response);
+    }
 );
 
 /**
@@ -51,21 +51,20 @@ router.get(
  * @throws {413} - If the freet content is more than 140 characters long
  */
 router.post(
-  '/:freetId',
-  [
-    userValidator.isUserLoggedIn,
-    freetValidator.isFreetExists,
-    likeValidator.isLikeNotExists,
-  ],
-  async (req: Request, res: Response) => {
-    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    const like = await LikeCollection.addOne(userId, req.params.freetId);
+    '/:freetId',
+    [
+        userValidator.isUserLoggedIn,
+        freetValidator.isFreetExists,
+        likeValidator.isLikeNotExists,
+    ],
+    async (req: Request, res: Response) => {
+        const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+        const like = await LikeCollection.addOne(userId, req.params.freetId);
+        const allLikes = await LikeCollection.findAllByFreetId(req.params.freetId);
+        const response = allLikes.map(util.constructLikeResponse);
+        res.status(200).json(response);
 
-    res.status(201).json({
-      message: 'You successfully liked the Freet.',
-      like : util.constructLikeResponse(like)
-    });
-  }
+    }
 );
 
 /**
@@ -79,18 +78,19 @@ router.post(
  * @throws {404} - If the freetId is not valid
  */
 router.delete(
-  '/:freetId?',
-  [
-    userValidator.isUserLoggedIn,
-    freetValidator.isFreetExists,
-    likeValidator.isLikeExists,
-  ],
-  async (req: Request, res: Response) => {
-    await LikeCollection.deleteOne(req.session.userId as string, req.params.freetId);
-    res.status(200).json({
-      message: 'You successfully unliked the freet.'
-    });
-  }
+    '/:freetId?',
+    [
+        userValidator.isUserLoggedIn,
+        freetValidator.isFreetExists,
+        likeValidator.isLikeExists,
+    ],
+    async (req: Request, res: Response) => {
+        await LikeCollection.deleteOne(req.session.userId as string, req.params.freetId);
+
+        const allLikes = await LikeCollection.findAllByFreetId(req.params.freetId);
+        const response = allLikes.map(util.constructLikeResponse);
+        res.status(200).json(response);
+    }
 );
 
 export {router as likeRouter};

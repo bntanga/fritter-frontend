@@ -9,6 +9,7 @@ type FreetResponse = {
   dateCreated: string;
   content: string;
   dateModified: string;
+  expiryDate: string;
 };
 
 /**
@@ -35,15 +36,18 @@ const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse =
 
   const {username} = freetCopy.authorId;
   delete freetCopy.authorId;
-  if (freetCopy.expiryDate === null){
-    delete freetCopy.expiryDate;
+  let expiryDate = "";
+  if (freetCopy.expiryDate !== null){
+    expiryDate = formatDate(freetCopy.expiryDate)
   }
+  delete freetCopy.expiryDate;
   return {
     ...freetCopy,
     _id: freetCopy._id.toString(),
     author: username,
     dateCreated: formatDate(freet.dateCreated),
-    dateModified: formatDate(freet.dateModified)
+    dateModified: formatDate(freet.dateModified),
+    expiryDate: expiryDate,
   };
 };
 

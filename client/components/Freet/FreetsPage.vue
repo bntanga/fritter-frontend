@@ -6,7 +6,17 @@
       <header>
         <h2>Welcome @{{ $store.state.username }}</h2>
       </header>
-      <CreateFreetForm />
+
+      <modal
+          v-if="$store.state.create_freet_modal"
+          @closed="$store.commit('show_modal', false)"
+          height = "50%"
+          width = "50%"
+          name="example">
+<!--        <CreateFreetForm/>-->
+        <AddFreetCustom/>
+      </modal>
+
     </section>
     <section v-else>
       <header>
@@ -33,24 +43,24 @@
         </div>
         <div class="right">
           <GetFreetsForm
-            ref="getFreetsForm"
-            value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get freets"
+              ref="getFreetsForm"
+              value="author"
+              placeholder="🔍 Filter by author (optional)"
+              button="🔄 Get freets"
           />
         </div>
       </header>
       <section
-        v-if="$store.state.freets.length"
+          v-if="$store.state.freets.length"
       >
         <FreetComponent
-          v-for="freet in $store.state.freets"
-          :key="freet.id"
-          :freet="freet"
+            v-for="freet in $store.state.freets"
+            :key="freet.id"
+            :freet="freet"
         />
       </section>
       <article
-        v-else
+          v-else
       >
         <h3>No freets found.</h3>
       </article>
@@ -62,12 +72,21 @@
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
+import ExpirationSelector from "./ExpirationComponent";
+import AddFreetCustom from "./AddFreetCustom";
 
 export default {
   name: 'FreetPage',
-  components: {FreetComponent, GetFreetsForm, CreateFreetForm},
+  components: {AddFreetCustom, ExpirationSelector, FreetComponent, GetFreetsForm, CreateFreetForm},
   mounted() {
     this.$refs.getFreetsForm.submit();
+  },
+  updated() {
+    if (this.$store.state.create_freet_modal) {
+      this.$modal.show('example');
+    }
+    console.log("mounted");
+    console.log("this is store state open create freets: ", this.$store.state.create_freet_modal)
   }
 };
 </script>
@@ -79,18 +98,20 @@ section {
 }
 
 header, header > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 section .scrollbox {
   flex: 1 0 50vh;
   padding: 3%;
   overflow-y: scroll;
+}
+.create-modal{
 }
 </style>

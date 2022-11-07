@@ -1,9 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" style="display: flex; flex-direction: row">
     <header>
-      <NavBar />
+      <NavBar/>
     </header>
-    <router-view />
+    <div style="width: 300px; height: 100%"/>
+    <router-view/>
   </div>
 </template>
 
@@ -47,31 +48,33 @@ main {
 }
 
 .alerts {
-    position: absolute;
-    z-index: 99;
-    bottom: 0;
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, 10%);
-    width: 100%;
-    text-align: center;
+  position: fixed;
+  top: 10%;
+  transform: translate(-50%, 10%);
+  width: 50%;
+  left: 50%;
+  z-index: 999;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  opacity: 1;
 }
 
 .alerts article {
-    border-radius: 5px;
-    padding: 10px 20px;
-    color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: #fff;
 }
 
 .alerts p {
-    margin: 0;
+  margin: 0;
 }
 
 .alerts .error {
-    background-color: rgb(166, 23, 33);
+  background-color: rgb(166, 23, 33);
 }
 
 .alerts .success {
-    background-color: rgb(45, 135, 87);
+  background-color: rgb(45, 135, 87);
 }
 </style>
