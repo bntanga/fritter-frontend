@@ -15,11 +15,22 @@
     <modal
         v-if="edit_exp_modal"
         @closed="edit_exp_modal=false"
-        height = "50%"
-        width = "50%"
+        height = "700px"
+        width = "600px"
         name="example">
       <EditExpiration :freet="freet" @closeModal = "edit_exp_modal=false"/>
     </modal>
+
+    <modal
+        v-if="edit_content_modal"
+        @closed="edit_content_modal=false"
+        height = "700px"
+        width = "600px"
+        name="content_modal">
+      <EditFreetCustom :freet="freet" @closeModal = "edit_content_modal=false"/>
+    </modal>
+
+
     <section class="alerts">
       <article
           v-for="(status, alert, index) in alerts"
@@ -36,9 +47,10 @@
 <script>
 
 import EditExpiration from "./EditExpiration";
+import EditFreetCustom from "./EditFreetCustom";
 export default {
   name: 'CustomDropdown',
-  components: {EditExpiration},
+  components: {EditExpiration, EditFreetCustom},
   props: {
     deleteFreet:{
       required: true,
@@ -54,6 +66,7 @@ export default {
     return {
       show_dropdown: false,
       edit_exp_modal : false,
+      edit_content_modal: false,
       alerts: {},
     };
   },
@@ -68,7 +81,8 @@ export default {
     },
     editFreetLocal(){
       this.show_dropdown = false;
-      this.editFreet();
+      this.edit_content_modal = true;
+      console.log("edit freet called");
     },
     editExpirationLocal(){
       this.show_dropdown = false;
@@ -103,6 +117,9 @@ export default {
   updated() {
     if (this.edit_exp_modal) {
       this.$modal.show('example');
+    }
+    if (this.edit_content_modal) {
+      this.$modal.show('content_modal');
     }
   },
 };

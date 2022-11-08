@@ -1,17 +1,18 @@
 <!-- Default page that also displays freets -->
 
 <template>
-  <main>
+  <main style="min-width: 60%; display: flex; flex-direction: row; justify-content: center">
+    <article style="max-width: 1200px; width: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center">
     <section v-if="$store.state.username">
-      <header>
+      <header class = "welcome-text">
         <h2>Welcome @{{ $store.state.username }}</h2>
       </header>
 
       <modal
           v-if="$store.state.create_freet_modal"
           @closed="$store.commit('show_modal', false)"
-          height = "50%"
-          width = "50%"
+          height = "800px"
+          width = "700px"
           name="example">
 <!--        <CreateFreetForm/>-->
         <AddFreetCustom/>
@@ -20,10 +21,10 @@
     </section>
     <section v-else>
       <header>
-        <h2>Welcome to Fritter!</h2>
+        <h2 class = "welcome-text">Welcome to Fritter!</h2>
       </header>
       <article>
-        <h3>
+        <h3 class="welcome-text">
           <router-link to="/login">
             Sign in
           </router-link>
@@ -32,9 +33,9 @@
       </article>
     </section>
     <section>
-      <header>
+      <header style="display:flex; flex-direction: column">
         <div class="left">
-          <h2>
+          <h2 class="viewing-text">
             Viewing all freets
             <span v-if="$store.state.filter">
               by @{{ $store.state.filter }}
@@ -65,6 +66,7 @@
         <h3>No freets found.</h3>
       </article>
     </section>
+    </article>
   </main>
 </template>
 
@@ -113,5 +115,15 @@ section .scrollbox {
   overflow-y: scroll;
 }
 .create-modal{
+}
+.welcome-text{
+  margin-top: 36px;
+  font-family: "Kohinoor Devanagari",sans-serif;
+}
+.viewing-text{
+  font-family: "Kohinoor Devanagari",sans-serif;
+  font-size: 24px;
+  margin-top: 32px;
+
 }
 </style>

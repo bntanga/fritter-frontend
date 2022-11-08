@@ -2,6 +2,7 @@
 <!-- User should be authenticated in order to see this page -->
 
 <template>
+  <div style="margin-top: 50px; margin-left: 150px">
   <main>
     <section>
       <header>
@@ -18,6 +19,7 @@
       <DeleteAccountForm />
     </section>
   </main>
+  </div>
 </template>
 
 <script>

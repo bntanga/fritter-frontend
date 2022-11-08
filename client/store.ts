@@ -16,8 +16,14 @@ const store = new Vuex.Store({
     create_freet_modal: false,
     refresh: false,
     show_comment_modal: true,
+    active_page: "home",
   },
   mutations: {
+
+    change_active_page(state, new_page){
+      console.log("this is new_page", new_page);
+      state.active_page = new_page;
+    },
 
     show_modal(state, new_state){
       console.log("committing");

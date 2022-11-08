@@ -29,7 +29,6 @@ const router = express.Router();
 router.get(
   '/:freetId',
   [
-    userValidator.isUserLoggedIn,
     isFreetExists,
   ],
   async (req: Request, res: Response) => {

@@ -156,7 +156,7 @@ export default {
 }
 
 .dropdown-container /deep/ .dropdown-menu {
-  max-height: 500px;
+  max-height: 300px;
   overflow-y: auto;
   width: 30px;
 }

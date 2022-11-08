@@ -3,7 +3,7 @@
     <header>
       <NavBar/>
     </header>
-    <div style="width: 300px; height: 100%"/>
+    <div style=" height: 100%; width: 17%;max-width: 400px;"/>
     <router-view/>
   </div>
 </template>

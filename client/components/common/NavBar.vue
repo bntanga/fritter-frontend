@@ -4,33 +4,36 @@
 
 <template>
   <div class="sidebar">
-    <div class="left">
+    <div style="display: flex; flex-direction: column; align-items: center; ">
       <img src="../../public/logo.svg">
-      <h1 class="title">
+      <h1 style="font-size: 32px; font-family: 'Arial Hebrew',serif; font-weight: 600">
         Fritter
       </h1>
     </div>
-    <div>
-      <router-link to="/">
+    <div @click="onClickHome">
+      <router-link to="/" :class="$store.state.active_page === 'home'? 'nav-link':'nav-link-alt'">
+        <!--        <router-link to="/" class="nav-link-2">-->
         Home
       </router-link>
     </div>
-    <div>
-      <router-link
-          v-if="$store.state.username"
-          to="/account"
+    <div @click="onClickAccount" v-if="$store.state.username">
+      <router-link :class="$store.state.active_page === 'account'? 'nav-link':'nav-link-alt'"
+
+                   to="/account"
       >
         Account
       </router-link>
-      <router-link
-          v-else
-          to="/login"
+    </div>
+    <div @click="onClickLogin" v-else>
+      <router-link :class="$store.state.active_page === 'account'? 'nav-link':'nav-link-alt'"
+
+                   to="/login"
       >
         Login
       </router-link>
     </div>
-    <div class="freet-button" @click="$store.commit('show_modal', true)">
-      Freet
+    <div class="freet-button" @click="onClickCreateFreet" v-if="$store.state.username">
+      Create Freet
     </div>
     <section class="alerts">
       <article
@@ -43,6 +46,44 @@
     </section>
   </div>
 </template>
+
+
+
+<script>
+import router from "../../router";
+
+export default {
+  name: 'NavBar',
+  props: {},
+  data() {
+    return {}
+  },
+  methods: {
+
+    onClickHome(){
+      router.push("/");
+      this.$store.commit('change_active_page', 'home');
+    },
+    onClickAccount(){
+      router.push("/account");
+      this.$store.commit('change_active_page', 'account');
+    },
+    onClickLogin(){
+      router.push("/login");
+      this.$store.commit('change_active_page', 'account');
+    },
+    onClickCreateFreet(){
+      if(this.$store.state.active_page === "account"){
+        router.push("/");
+      }
+      this.$store.commit('show_modal', true);
+      this.$store.commit('change_active_page', 'home');
+    }
+  },
+}
+
+
+</script>
 
 <style scoped>
 nav {
@@ -87,12 +128,13 @@ img {
 
 .sidebar {
   height: 100vh;
-  width: 300px;
+  width: 15%;
+  max-width: 400px;
   position: fixed;
   left: 0;
   /*top: 0;*/
   padding-top: 40px;
-  background-color: lightblue;
+  background-color: #EECBCB;
   overflow-y: hidden;
 }
 
@@ -107,10 +149,55 @@ img {
   font-size: 18px;
 }
 
+.freet-button{
+  font-weight: 600;
+  font-family: "Arial Hebrew", sans-serif;
+  width: 90%;
+  text-decoration: none;
+  background-color: #D16060;
+  border-radius: 24px;
+  text-align: center;
+  margin-left: 16px;
+  margin-top: 100px;
+  color: #FCDFDF;
+  font-size: 28px !important;
+
+}
 .freet-button:hover,
 .freet-button:focus {
   box-shadow: 0 0.5em 0.5em -0.4em;
   transform: translateY(-0.25em);
   cursor: pointer;
+  color: #FFFFFF;
 }
+
+.nav-link {
+  color: black;
+  font-weight: 500;
+  font-family: "Hoefler Text", sans-serif;
+  background-color: white;
+  padding: 20px;
+  width: 600px;
+}
+
+.nav-link-alt {
+  color: black;
+  font-weight: 500;
+  font-family: "Hoefler Text", sans-serif;
+  width: 600px;
+  text-decoration: none;
+  padding: 20px;
+}
+
+.nav-link:hover {
+  color: red;
+  box-shadow: 0 0.5em 0.5em -0.4em;
+  transform: translateY(-0.25em);
+}
+
+.nav-link-alt:hover {
+  color: red;
+  transform: translateY(-0.25em);
+}
+
 </style>

@@ -49,14 +49,14 @@
 
       <div style="display: flex; flex-direction: row; justify-content: space-evenly">
         <div @click="()=> this.show_comments= !this.show_comments" class="hover-pointer">
-          {{ comments_length}} Comments
+          {{ comments_length}} {{ comments_length === 1? "comment": "comments" }}
         </div>
         <div>
           <div class="hover-pointer"
               v-if="!liked"
               @click="likeFreet">
-            <font-awesome-icon icon="fa-regular fa-heart" size="lg" style="color: black;"/>
-            {{ users_liking.length }} likes
+            <font-awesome-icon icon="fa-regular fa-heart" size="lg" style="color: red;" class = "hover-pointer"/>
+            {{ users_liking.length }} {{ users_liking.length === 1? "like": "likes" }}
           </div>
           <div
               v-else
@@ -65,7 +65,7 @@
               class="hover-pointer"
           >
             <font-awesome-icon icon="fa-solid fa-heart" size="lg"/>
-            {{ users_liking.length }} likes
+            {{ users_liking.length }} {{ users_liking.length === 1? "like": "likes" }}
           </div>
 
         </div>
@@ -296,10 +296,10 @@ export default {
   padding: 20px;
   position: relative;
   margin: 20px;
-  max-width: 1200px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   border-radius: 5px; /* 5px rounded corners */
+  width: 500px;
 }
 
 .info {
@@ -310,6 +310,7 @@ export default {
 
 .hover-pointer:hover {
   cursor: pointer;
+  color: red !important;
 }
 .author{
   font-family: "Kohinoor Devanagari",sans-serif;

@@ -2,7 +2,9 @@
 <!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
 
 <template>
-  <div class="component-container">
+  <div>
+    <p class = "x-icon" @click="$emit('closeModal');">X </p>
+    <div class="component-container">
     <p v-if="freet.expiryDate!==''"
         style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> Edit Expiration </p>
     <p v-else
@@ -52,12 +54,6 @@
     <div style="display: flex; flex-direction: row; justify-content: space-between">
       <div v-if="freet.expiryDate!==''"
            style="font-weight: 600; font-size: 16px; text-align: left; margin-bottom: 10px; color: blue;  margin-top: 8px">Current Expiration: {{freet.expiryDate}}</div>
-
-
-      <div style="display: flex; flex-direction: row; justify-content: flex-end">
-        <b-button variant="outline-danger" style="margin-right: 20px" @click="clearExpiry">Clear expiry</b-button>
-        <b-button variant="outline-success"  @click="setExpiry">Set expiry</b-button>
-      </div>
     </div>
 
 
@@ -70,6 +66,10 @@
         <p>{{ alert }}</p>
       </article>
     </section>
+    </div>
+    <p>
+      <b-button variant="success"  @click="setExpiry" style="margin-top: 24px; margin-left: 16px; margin-right: 16px; width: 94%">Set expiry</b-button>
+    </p>
   </div>
 </template>
 
@@ -190,7 +190,7 @@ export default {
 }
 
 .dropdown-container /deep/ .dropdown-menu {
-  max-height: 500px;
+  max-height: 300px;
   overflow-y: auto;
   width: 30px;
 }
@@ -212,5 +212,13 @@ export default {
   border-width:2px;
   border-style: solid;
   padding: 24px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+.x-icon{
+  font-weight: bold; text-align: right; margin-top: 24px; margin-right: 24px; font-size: 24px;
+}
+.x-icon:hover{
+  cursor: pointer;
 }
 </style>

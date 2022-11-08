@@ -5,10 +5,10 @@
   <article
       class="comment-container"
   >
-    <p class = "x-icon" @click="$store.commit('show_modal', false)">X </p>
+    <p class = "x-icon" @click="$emit('closeModal')"> X </p>
     <header>
 
-      <p style="font-weight: bold; font-size: 24px; text-align: center;">Create Freet </p>
+      <p style="font-weight: bold; font-size: 24px; text-align: center;">Edit Freet </p>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly">
         <div style="border-top-style: solid; border-color: blue; margin-top: 2px; margin-left: 24px; margin-right: 24px; display: flex; justify-content: space-between; flex-direction: column">
         <textarea
@@ -23,9 +23,8 @@
             <span id="current">{{ this.draft.length }}</span>
             <span id="maximum">/ 140</span>
           </div>
-          <ExpirationSelector @addExpiry="(time) => this.expiry = time" @removeExpiry="this.expiry=''"/>
-          <b-button variant="success" size="lg" @click="add_freet"
-                    style="margin-top: 20px; margin-bottom: 20px">Submit Freet
+          <b-button variant="success" size="lg" @click="edit_freet"
+                    style="margin-top: 20px; margin-bottom: 20px">Submit Edit
           </b-button>
         </div>
       </div>
@@ -45,12 +44,12 @@
 
 <script>
 
-import ExpirationSelector from "./ExpirationComponent";
 
 export default {
-  name: 'AddFreetCustom',
-  components: {ExpirationSelector},
+  name: 'EditFreetCustom',
   props: {
+    freet : {
+    }
   },
   data() {
     return {
@@ -63,55 +62,34 @@ export default {
   },
 
   methods: {
-
-    async fetch_comments_and_refresh() {
-      await this.fetch_comments();
-      this.$emit('updateComments');
-    },
-
-    async fetch_comments() {
-      console.log("fetch called");
+    async edit_freet() {
       const options = {
-        method: "GET", headers: {'Content-Type': 'application/json'}
-      };
-      const r = await fetch(`/api/comments/${this.freetId}`, options);
-      const res = await r.json();
-      if (!r.ok) {
-        console.log(res.error);
-      } else {
-        this.comments = [];
-        for (const comment_ind in res) {
-          this.comments.push(res[comment_ind]);
-        }
-      }
-    },
-    async add_freet() {
-      const options = {
-        method: "POST",
+        method: "PATCH",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({content: this.draft, expiryDate: this.expiry})
+        body: JSON.stringify({content: this.draft})
       };
-      const r = await fetch(`/api/freets`, options);
+      const r = await fetch(`/api/freets/${this.freet._id}`, options);
       const res = await r.json();
       if (!r.ok) {
         console.log(res.error);
       } else {
-        await this.fetch_comments();
         this.draft = "";
-        const message = 'Successfully created freet!';
+        const message = 'Successfully edited freet!';
         this.$set(this.alerts, message, 'success');
         setTimeout(() => this.$delete(this.alerts, message), 3000);
         await new Promise(f => setTimeout(f, 2000));
         this.$store.commit('refreshFreets');
         this.$store.commit('show_modal', false)
+        this.$emit("closeModal")
       }
     },
   },
   created() {
-    this.fetch_comments();
+    this.draft = this.freet.content
   },
+
 };
 </script>
 
