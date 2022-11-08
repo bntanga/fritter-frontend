@@ -38,6 +38,8 @@ const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse =
   delete freetCopy.authorId;
   let expiryDate = "";
   if (freetCopy.expiryDate !== null){
+    // let date = freetCopy.expiryDate
+    // date.setHours(date.getHours() - 4);
     expiryDate = formatDate(freetCopy.expiryDate)
   }
   delete freetCopy.expiryDate;

@@ -12,7 +12,7 @@ class ExpiryCollection {
   static async changeOne(freetId: Types.ObjectId | string, date_string: string): Promise<HydratedDocument<Freet>> {
     console.log("this is date string");
     console.log(date_string);
-    const date = new Date(date_string);
+    let date = new Date(date_string);
     const freet = await FreetCollection.findOne(freetId);
     freet.expiryDate = date;
     await freet.save();

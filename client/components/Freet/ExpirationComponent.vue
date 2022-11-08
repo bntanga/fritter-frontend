@@ -116,8 +116,9 @@ export default {
       }
       const date_string = `${this.curr_year}-${monthMap[this.curr_month]}-${this.curr_day}T${this.curr_hour}:${this.curr_min}`;
       if (!moment(date_string).isValid()){
-        this.$set(this.alerts, "Invalid Date Selected", 'error');
-        setTimeout(() => this.$delete(this.alerts, date_string), 3000);
+        let message = "Invalid Date Selected";
+        this.$set(this.alerts, message, 'error');
+        setTimeout(() => this.$delete(this.alerts, message), 3000);
         return
       }
       let curr_date = new Date(date_string);
