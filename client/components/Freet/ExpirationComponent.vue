@@ -3,7 +3,7 @@
 
 <template>
   <div class="component-container">
-    <p style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> Select Expiration (Optional) </p>
+    <p style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> (Optional) Select Expiration. Timezone: UTC  </p>
     <article style="display: flex; flex-direction: row">
       <div class="single-dd-container">
         <div class="dropdown-intro">Month</div>
@@ -122,6 +122,8 @@ export default {
         return
       }
       let curr_date = new Date(date_string);
+
+      let date_rn = new Date();
       if (curr_date < new Date()){
         this.$set(this.alerts, "Cannot set expiration in past", 'error');
         setTimeout(() => this.$delete(this.alerts, "Cannot set expiration in past"), 3000);

@@ -6,9 +6,9 @@
     <p class = "x-icon" @click="$emit('closeModal');">X </p>
     <div class="component-container">
     <p v-if="freet.expiryDate!==''"
-        style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> Edit Expiration </p>
+        style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> Edit Expiration (Timezone: UTC) </p>
     <p v-else
-       style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> Add Expiration </p>
+       style="font-weight: 600; font-size: 20px; text-align: center; margin-bottom: 30px; color: green"> Add Expiration (Timezone: UTC) </p>
     <article style="display: flex; flex-direction: row">
       <div class="single-dd-container">
         <div class="dropdown-intro">Month</div>
